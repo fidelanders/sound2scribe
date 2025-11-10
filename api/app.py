@@ -58,6 +58,24 @@ def validate_audio(file_path):
         print(f"Invalid audio file: {e}")
         return None
 
+@app.route('/health', methods=['GET'])
+def health_check():
+    if model is None:
+        status = 'Model not loaded'
+        message = 'The server is running, but the model is not yet loaded.'
+    else:
+        status = 'Healthy'
+        message = f'Server is running and the Whisper model is ready (version {whisper.__version__}).'
+
+    return jsonify({
+        'status': status,
+        'message': message,
+        'model_loaded': model is not None,
+        'python_version': sys.version,
+        'whisper_version': whisper.__version__
+    })
+
+
 @app.route('/upload', methods=['POST'])
 def upload_file():
     if model is None:
@@ -128,10 +146,7 @@ def upload_file():
             except Exception as e:
                 print(f"Error deleting temp file: {e}")
 
-@app.route('/health', methods=['GET'])
-def health_check():
-    status = 'healthy' if model is not None else 'model not loaded'
-    return jsonify({'status': status, 'model_loaded': model is not None})
+
 
 if __name__ == '__main__':
     print("Starting server on http://localhost:5000")

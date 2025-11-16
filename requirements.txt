@@ -1,6 +1,6 @@
-alembic==1.10.4
-altgraph==0.17.4
-annotated-types==0.7.0
+alembic
+altgraph
+annotated-types
 anyio==4.3.0
 audioop-lts==0.2.2
 audioread==3.0.1
